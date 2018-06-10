@@ -3,8 +3,6 @@ import java.awt.event.ActionListener;
 
 public class ButtonListener implements ActionListener
 {
-
-    ButtonListener(){}
     public void actionPerformed(ActionEvent e)
     {
         if(e.getActionCommand().equals("Attack"))
@@ -16,22 +14,17 @@ public class ButtonListener implements ActionListener
         }
         else if(e.getActionCommand().equals("Use Ability"))
         {
-            if(Display.tarBar.isVisible())
+            if(Display.abBar.isVisible())
             {
-                Display.tarBar.setVisible(false);
+                Display.abBar.setVisible(false);
             }
             else
             {
-                Display.tarBar.setVisible(true);
+                Display.abBar.setVisible(true);
             }
         }
-        else if(e.getActionCommand().equals("Items"))
-        {
-            if(Display.itBar.isVisible())
-                Display.itBar.setVisible(false);
-            else
-                Display.itBar.setVisible(true);
-        }
+
+
     }
 
 }
