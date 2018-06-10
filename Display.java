@@ -1,5 +1,3 @@
-import javafx.scene.control.RadioButton;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,18 +10,18 @@ import java.util.ArrayList;
 import java.util.Date;
 public class Display extends JFrame
 {
-    public JRadioButton at1, at2, at3;
-    public JRadioButton[][] choiceMatrix = new JRadioButton[3][3];
     ButtonGroup groupAt = new ButtonGroup();
-    ButtonGroup groupAbTar = new ButtonGroup();
+    ButtonGroup groupAb = new ButtonGroup();
     public static JMenuBar atBar = new JMenuBar();
     public static JMenuBar abBar = new JMenuBar();
     public static JMenuBar itBar = new JMenuBar();
     public static JMenuBar tarBar = new JMenuBar();
+    public static JMenuBar allBar = new JMenuBar();
     JMenu atMenu = new JMenu("Attack");
     JMenu abMenu = new JMenu("Ability casting");
     JMenu itMenu = new JMenu("Item usage");
     JMenu tarMenu = new JMenu("Targeting");
+    JMenu allMenu = new JMenu("All targeting");
     JFrame screen = new JFrame("Fight Game");
     Canvas panel = new Canvas();
     JButton attack = new JButton("Attack");
@@ -31,49 +29,44 @@ public class Display extends JFrame
     JButton items = new JButton("Items");
     public Display(Player p, Environment e, Party team)
     {
-        at1 = new JRadioButton(e.getEnemies().get(0).getName());
-        at2 = new JRadioButton(e.getEnemies().get(1).getName());
+        for(int i = 0; i < p.getAbilities().size(); i++)
+        {
+            JButton btn = new JButton(p.getAbilities().get(i).getName());
+            groupAb.add(btn);
+            abBar.add(btn);
+            btn.addActionListener(new ButtonListener());
+        }
+
         if(p.isHealer())
         {
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                {
-                    JRadioButton btn = new JRadioButton(p.getAbilities().get(j).getName() + team.getActors().get(i).getName());
-                    btn.addActionListener(new RadioListener(p, team, i, j, e));
-                    groupAbTar.add(btn);
-                    choiceMatrix[i][j] = btn;
-
-                }
+            for(int i = 0; i < e.getPlayers().size(); i++)
+            {
+                JButton btn = new JButton(e.getPlayers().get(i).getName());
+                groupAt.add(btn);
+                atBar.add(btn);
+                btn.addActionListener(new ButtonListener());
+            }
         }
-        else {
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                {
-                    JRadioButton btn = new JRadioButton();
-                    btn.addActionListener(new RadioListener(p, team, i, j, e));
-                    btn.setName(p.getAbilities().get(j).getName() + e.getEnemies().get(i).getName());
-                    groupAbTar.add(btn);
-                    choiceMatrix[i][j] = btn;
-                }
+        else
+        {
+            for(int i = 0; i < e.getEnemies().size(); i++)
+            {
+                JButton btn = new JButton(e.getEnemies().get(i).getName());
+                groupAt.add(btn);
+                atBar.add(btn);
+                btn.addActionListener(new ButtonListener());
+            }
         }
+        JButton all = new JButton("All");
+        allBar.add(all);
     }
 
     public void run()
     {
-        groupAt.add(at1);
-        groupAt.add(at2);
-        groupAt.add(at3);
-
         atBar.add(atMenu);
         abBar.add(abMenu);
         tarBar.add(tarMenu);
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-            {
-                tarBar.add(choiceMatrix[i][j]);
-            }
-        atBar.add(at1);
-        atBar.add(at2);
+        allBar.add(allMenu);
         attack.addActionListener(new ButtonListener());
         useAb.addActionListener(new ButtonListener());
         items.addActionListener(new ButtonListener());
@@ -90,10 +83,12 @@ public class Display extends JFrame
         screen.add(abBar);
         screen.add(itBar);
         screen.add(tarBar);
+        screen.add(allBar);
         atBar.setVisible(false);
         abBar.setVisible(false);
         itBar.setVisible(false);
         tarBar.setVisible(false);
+        allBar.setVisible(false);
         screen.setLocationRelativeTo(null);
         screen.setVisible(true);
         screen.pack();
@@ -131,4 +126,3 @@ class Canvas extends JPanel
 
 
 }
-
