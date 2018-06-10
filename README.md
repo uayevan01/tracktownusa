@@ -1,4 +1,3 @@
-"# tracktownusa" 
-"# tracktownusa" 
-"# tracktownusa" 
-"# tracktownusa" 
+# fightgame
+
+Healing ability = Magic * rate
